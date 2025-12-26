@@ -1,35 +1,45 @@
-;; Simple Staking Contract
-;; This contract allows users to stake their assets for a fee in sBTC.
+;; @clarity-version 4
 
-;; Define contract owner
-(define-constant CONTRACT_OWNER tx-sender)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Constants & Errors
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Define error codes
-(define-constant ERR-NOT-ENOUGH-BALANCE u100)
-(define-constant ERR-NOTHING-TO-WITHDRAW u101)
 
-;; Configuration
-(define-constant STAKING-REWARD-PERCENT u10) ;; 10% reward
+(define-constant ERR-NO-STAKE (err u100))
+(define-constant ERR-INVALID-AMOUNT (err u101))
 
-;; Data storage
+(define-constant REWARD_PERCENT u10) ;; 10% reward
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Storage
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (define-map stakes
   { staker: principal }
   { amount: uint }
 )
 
-;; Read-only: get stake balance
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Read-only Functions
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (define-read-only (get-stake (user principal))
   (default-to u0 (get amount (map-get? stakes { staker: user })))
 )
 
-;; Stake STX
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Public Functions
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (define-public (stake (amount uint))
   (begin
-    (asserts! (> amount u0) ERR-NOT-ENOUGH-BALANCE)
+    ;; Validate amount
+    (asserts! (> amount u0) ERR-INVALID-AMOUNT)
 
     ;; Transfer STX from user to contract
     (try! (stx-transfer? amount tx-sender (as-contract tx-sender)))
 
+    ;; Update stake balance
     (let ((current (get-stake tx-sender)))
       (map-set stakes
         { staker: tx-sender }
@@ -37,25 +47,40 @@
       )
     )
 
+    ;; Emit Chainhook-friendly event
+    (print {
+      event: "stake",
+      user: tx-sender,
+      amount: amount,
+      block: block-height
+    })
+
     (ok true)
   )
 )
 
-;; Unstake + reward
 (define-public (unstake)
   (let ((staked (get-stake tx-sender)))
-    (asserts! (> staked u0) ERR-NOTHING-TO-WITHDRAW)
+    (asserts! (> staked u0) ERR-NO-STAKE)
 
     (let (
-        (reward (/ (* staked STAKING-REWARD-PERCENT) u100))
-        (total (+ staked reward))
-      )
+      (reward (/ (* staked REWARD_PERCENT) u100))
+      (total (+ staked reward))
+    )
 
-      ;; Clear stake
+      ;; Clear stake record
       (map-delete stakes { staker: tx-sender })
 
-      ;; Pay user
-      (try! (as-contract (stx-transfer? total tx-sender tx-sender)))
+      ;; Send funds back to user
+      (try! (as-contract (stx-transfer? total tx-sender)))
+
+      ;; Emit Chainhook event
+      (print {
+        event: "unstake",
+        user: tx-sender,
+        amount: total,
+        block: block-height
+      })
 
       (ok total)
     )
