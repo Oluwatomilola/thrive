@@ -1,0 +1,433 @@
+/* Stacks Staking dApp Styles */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #5546ff;
+  --secondary: #1a202c;
+  --success: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --light: #f3f4f6;
+  --dark: #111827;
+  --border: #e5e7eb;
+  --radius: 8px;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
+  background-color: var(--light);
+  color: var(--dark);
+  line-height: 1.5;
+}
+
+.staking-dapp {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.dapp-header {
+  background: linear-gradient(135deg, var(--primary), #3b2fff);
+  color: white;
+  padding: 3rem 2rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
+.dapp-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.dapp-header p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* Main Content */
+.dapp-main {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.section {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--secondary);
+}
+
+/* Wallet Section */
+.wallet-section {
+  text-align: center;
+}
+
+.wallet-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.wallet-connected {
+  padding: 1rem;
+  background-color: var(--light);
+  border-radius: var(--radius);
+  border: 2px solid var(--success);
+}
+
+.principal,
+.balance {
+  font-size: 0.95rem;
+  margin: 0.25rem 0;
+  color: var(--secondary);
+}
+
+.principal {
+  font-weight: 600;
+  font-family: monospace;
+}
+
+/* Buttons */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #4435dd;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(85, 70, 255, 0.3);
+}
+
+.btn-secondary {
+  background-color: var(--secondary);
+  color: white;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: #2d3748;
+}
+
+.btn-danger {
+  background-color: var(--danger);
+  color: white;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: #dc2626;
+  transform: translateY(-2px);
+}
+
+.btn-loading {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Forms */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--secondary);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(85, 70, 255, 0.1);
+}
+
+.form-group input:disabled {
+  background-color: var(--light);
+  cursor: not-allowed;
+}
+
+/* Messages */
+.error-message,
+.error {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.success-message {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  background-color: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+/* Grid Layout */
+.sections-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Staking Section */
+.staking-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.staking-form.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.current-stake {
+  padding: 1rem;
+  background-color: var(--light);
+  border-radius: var(--radius);
+  border-left: 4px solid var(--primary);
+  margin-bottom: 1rem;
+}
+
+.current-stake p {
+  margin: 0;
+  font-weight: 600;
+  color: var(--secondary);
+}
+
+/* Unstaking Section */
+.unstaking-component.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.stake-info {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(85, 70, 255, 0.05), rgba(59, 47, 255, 0.05));
+  border-radius: var(--radius);
+  border: 2px solid var(--primary);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.stake-info h3 {
+  font-size: 0.95rem;
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+}
+
+.stake-amount {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0;
+}
+
+/* Activity Feed */
+.activity-section {
+  grid-column: 1 / -1;
+}
+
+.activity-feed {
+  min-height: 200px;
+}
+
+.activity-feed.empty {
+  padding: 2rem;
+  text-align: center;
+  color: #6b7280;
+  background-color: var(--light);
+  border-radius: var(--radius);
+}
+
+.activity-feed.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: #6b7280;
+}
+
+.activity-feed h3 {
+  margin-bottom: 1rem;
+  color: var(--secondary);
+}
+
+.feed-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.feed-item {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: white;
+  transition: all 0.2s ease;
+}
+
+.feed-item:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+  border-color: var(--primary);
+}
+
+.feed-item.stake {
+  border-left: 4px solid var(--success);
+}
+
+.feed-item.unstake {
+  border-left: 4px solid var(--warning);
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.type-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background-color: var(--primary);
+  color: white;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.status-badge.pending {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.status-badge.confirmed {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.status-badge.failed {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.item-details p {
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.amount {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--secondary);
+}
+
+.tx-id a {
+  color: var(--primary);
+  text-decoration: none;
+  font-family: monospace;
+}
+
+.tx-id a:hover {
+  text-decoration: underline;
+}
+
+/* Footer */
+.dapp-footer {
+  background-color: var(--secondary);
+  color: white;
+  text-align: center;
+  padding: 2rem;
+  margin-top: auto;
+}
+
+.dapp-footer p {
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dapp-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .dapp-main {
+    padding: 1rem;
+  }
+
+  .section {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .sections-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .wallet-info {
+    flex-direction: column;
+  }
+}
